@@ -97,7 +97,7 @@ INSERT INTO estacion (estacion_id,nombre,ciudad,pais) VALUES (4,'Estacion de Ori
 INSERT INTO estacion (estacion_id,nombre,ciudad,pais) VALUES (82,'Estación Liverpool Lime Street','Liverpool','Gran Bretaña');
 INSERT INTO estacion (estacion_id,nombre,ciudad,pais) VALUES (125,'Estación Central de Livorno','Livorno','Italia');
 INSERT INTO estacion (estacion_id,nombre,ciudad,pais) VALUES (35,'Estación de Lleida','Lleida','España');
-INSERT INTO estacion (estacion_id,nombre,ciudad,pais) VALUES (77,'Estación King\''\'s Cross','London','Gran Bretaña');
+INSERT INTO estacion (estacion_id,nombre,ciudad,pais) VALUES (77,'Estación Kings Cross','London','Gran Bretaña');
 INSERT INTO estacion (estacion_id,nombre,ciudad,pais) VALUES (182,'Estación Central de Lubeck','Lubeck','Alemania');
 INSERT INTO estacion (estacion_id,nombre,ciudad,pais) VALUES (112,'Estación de Lugano','Lugano','Suiza');
 INSERT INTO estacion (estacion_id,nombre,ciudad,pais) VALUES (97,'Estación de Luxemburgo','Luxemburgo','Luxemburgo');
