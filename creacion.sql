@@ -7,14 +7,6 @@ CREATE TABLE cliente(
     PRIMARY KEY(cliente_id)
 );
 
-CREATE TABLE tren(
-    tren_id SERIAL,
-    num_sillas_vip INT NOT NULL CHECK(num_sillas_vip = 10),
-    num_sillas_ejecutiva INT NOT NULL CHECK(num_sillas_ejecutiva = 20),
-    num_sillas_economica INT NOT NULL CHECK(num_sillas_economica = 30),
-    PRIMARY KEY (tren_id)
-);
-
 CREATE TABLE estacion(
     estacion_id INT,
     nombre VARCHAR NOT NULL,
@@ -26,22 +18,27 @@ CREATE TABLE estacion(
 CREATE TABLE reserva(
     reserva_id SERIAL,
     cliente_id INT,
-    tren_id INT,
+    ruta_id INT,
     monto NUMERIC(10,2),
-    silla INT NOT NULL,
+    tipo_silla VARCHAR NOT NULL CHECK(tipo_silla IN('vip','ejecutivo','economico')),
     fecha TIMESTAMP NOT NULL,
     medio_pago VARCHAR NOT NULL,
     PRIMARY KEY(reserva_id),
     FOREIGN KEY(cliente_id) REFERENCES cliente,
-    FOREIGN KEY(tren_id) REFERENCES tren
+    FOREIGN KEY(ruta_id) REFERENCES ruta
 );
 
 CREATE TABLE ruta(
+    ruta_id SERIAL,
     nombre VARCHAR NOT NULL,
-    estacion_id INT,
-    tren_id INT,
+    estacion_origen INT,
+    estacion_destino INT,
+    hora_partida TIMESTAMP,
     hora_llegada TIMESTAMP,
-    hora_salida TIMESTAMP,
-    FOREIGN KEY(estacion_id) REFERENCES estacion,
-    FOREIGN KEY(tren_id) REFERENCES tren
+    sillas_vip INT CHECK(sillas_vip >= 0 AND sillas_vip <= 10),
+    sillas_ejecutiva INT CHECK(sillas_ejecutiva >= 0 AND sillas_ejecutiva <= 20),
+    sillas_economica INT CHECK(sillas_economica >= 0 AND sillas_economica <= 30),
+    PRIMARY KEY(ruta_id),
+    FOREIGN KEY(estacion_origen) REFERENCES estacion,
+    FOREIGN KEY(estacion_destino) REFERENCES estacion,
 );
