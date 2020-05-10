@@ -4,7 +4,7 @@ CREATE TABLE cliente
   nombre VARCHAR NOT NULL,
   apellido VARCHAR NOT NULL,
   email VARCHAR NOT NULL,
-  telefono INT,
+  telefono BIGINT,
   PRIMARY KEY(cliente_id)
 );
 
