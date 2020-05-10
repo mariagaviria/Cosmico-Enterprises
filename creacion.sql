@@ -23,7 +23,7 @@ CREATE TABLE reserva(
     monto_ejecutivo NUMERIC(10,2),
     monto_economico NUMERIC(10,2),
     tipo_silla VARCHAR NOT NULL CHECK(tipo_silla IN('vip','ejecutivo','economico')),
-    fecha TIMESTAMP NOT NULL,
+    fecha TIMESTAMP NOT NULL default now(),
     medio_pago VARCHAR NOT NULL,
     PRIMARY KEY(reserva_id),
     FOREIGN KEY(cliente_id) REFERENCES cliente,
