@@ -41,7 +41,7 @@ CREATE TABLE reserva
     reserva_id SERIAL,
     cliente_id INT,
     ruta_id INT,
-    monto NUMERIC(10,2) CHECK(monto > 0)
+    monto NUMERIC(10,2) CHECK(monto > 0),
     fecha TIMESTAMP NOT NULL default now(),
     medio_pago VARCHAR NOT NULL,
     tipo_silla VARCHAR NOT NULL CHECK(tipo_silla IN('vip','ejecutivo','economico')),
