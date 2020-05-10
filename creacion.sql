@@ -25,7 +25,8 @@ CREATE TABLE reserva(
     medio_pago VARCHAR NOT NULL,
     PRIMARY KEY(reserva_id),
     FOREIGN KEY(cliente_id) REFERENCES cliente,
-    FOREIGN KEY(ruta_id) REFERENCES ruta
+    FOREIGN KEY(ruta_id) REFERENCES ruta,
+    FOREIGN KEY(monto) REFERENCES ruta
 );
 
 CREATE TABLE ruta(
@@ -35,6 +36,7 @@ CREATE TABLE ruta(
     estacion_destino INT,
     hora_partida TIMESTAMP,
     hora_llegada TIMESTAMP,
+    monto NUMERIC(10,2) NOT NULL CHECK(monto > 0),
     sillas_vip INT CHECK(sillas_vip >= 0 AND sillas_vip <= 10),
     sillas_ejecutiva INT CHECK(sillas_ejecutiva >= 0 AND sillas_ejecutiva <= 20),
     sillas_economica INT CHECK(sillas_economica >= 0 AND sillas_economica <= 30),
