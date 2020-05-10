@@ -41,12 +41,28 @@ def query2DataFrame(sqlQuery):
             DBConnection.close()
 
 """
+Por acá debe ir la creación de los grafos.
+Además, una función que reciba origen, destino, atributo a minimizar
+y retorne el diccionario con los ids de las estaciones.
+"""
+
+"""
 Ahora si, rutas de la aplicación
 """
 
 @app.route("/", methods=["GET"])
 def home():
-    return "Buenas buenas!"
+    return render_template("home.html")
+
+@app.route("/estaciones", methods=["GET"])
+def mostrarEstaciones():
+    query = "SELECT * FROM estacion"
+    tabla = query2DataFrame(query)
+    return tabla.to_html()
+
+@app.route("/mapa", methods=["GET"])
+def mostrarMapa():
+    return render_template("map.html")
 
 @app.route("/registro", methods=["GET"])
 def formulario():
@@ -72,21 +88,18 @@ def registrarse():
         DBConnection.commit()
         DBConnection.close()
         return "Todo en orden!"
-    except(Exception, psycopg2.DatabaseError) as error:
-        return "Error en el query "+error
+    except:
+        return "Ocurrió un error... Vuélvalo a intentar."
     finally:
         if DBConnection is not None:
             DBConnection.close()
 
-@app.route("/infoRutas", methods=["GET"])
-def informacionRutas():
-    return app.send_static_file("busquedaRutas.html")
+@app.route("/planearViaje", methods=["GET"])
+def ingresoDatos():
+    return app.send_static_file("buscarRuta.html")
 
-@app.route("/resultadoRutas",methods=["POST","GET"])
-def busquedaRutas():
-    if request.method == "POST":
-        origen = request.values.get("Ciudad_origen")
-        destino = request.values.get("Ciudad_destino")
-        return "<h1>" + "Vamos de " + origen + " a" + destino + "</h1>"
+@app.route("/resultadoRuta",methods=["POST","GET"])
+def mostrarRuta():
+    return "Aqui iriá algo fancy pero ajá"
 
 app.run()
