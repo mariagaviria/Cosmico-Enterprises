@@ -23,8 +23,6 @@ CREATE TABLE ruta
     nombre VARCHAR NOT NULL,
     estacion_origen INT,
     estacion_destino INT,
-    hora_partida TIMESTAMP,
-    hora_llegada TIMESTAMP,
     monto_vip NUMERIC(10,2) NOT NULL CHECK(monto_vip > 0),
     monto_ejecutivo NUMERIC(10,2) NOT NULL CHECK(monto_ejecutivo > 0),
     monto_economico NUMERIC(10,2) NOT NULL CHECK(monto_economico > 0),
