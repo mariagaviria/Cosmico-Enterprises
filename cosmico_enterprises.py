@@ -152,62 +152,70 @@ def ingresoDatos():
 
 @app.route("/resultadoRuta",methods=["POST","GET"])
 def mostrarRuta():
-    origen = request.values.get("origen")
-    destino = request.values.get("destino")
-    tipo_de_minimizacion = int(request.values.get("minimizar"))
-    query_origen = "SELECT idDeEstacion('"+origen+"')"
-    query_destino = "SELECT idDeEstacion('"+destino+"')"
-    tabla_origen = query2DataFrame(query_origen)
-    tabla_destino = query2DataFrame(query_destino)
-    id_origen = int(tabla_origen.at[0, "iddeestacion"])
-    id_destino = int(tabla_destino.at[0, "iddeestacion"])
-    rutas = []
-    ciudades_ids = {}
-    if tipo_de_minimizacion == 0:
-        resultado = nx.shortest_path(G_0, source=id_origen, target=id_destino)
-    elif tipo_de_minimizacion == 1:
-        resultado = nx.shortest_path(G_1, source=id_origen, target=id_destino)
-    elif tipo_de_minimizacion == 2:
-        resultado = nx.shortest_path(G_2, source=id_origen, target=id_destino)
-    elif tipo_de_minimizacion == 3:
-        resultado = nx.shortest_path(G_3, source=id_origen, target=id_destino)
-    for i in range(len(resultado)-1):
-        query_origen = "SELECT ciudadDeIdEstacion("+str(resultado[i])+")"
-        query_destino = "SELECT ciudadDeIdEstacion("+str(resultado[i+1])+")"
-        tabla_ciudad_1 = query2DataFrame(query_origen)
-        tabla_ciudad_2 = query2DataFrame(query_destino)
-        ciudad_1 = tabla_ciudad_1.at[0, "ciudaddeidestacion"]
-        ciudades_ids[ciudad_1] = resultado[i]
-        ciudad_2 = tabla_ciudad_2.at[0, "ciudaddeidestacion"]
-        ciudades_ids[ciudad_2] = resultado[i+1]
-        rutas.append(str(ciudad_1)+" - "+str(ciudad_2))
-    # Aqui entraria los grafos. Retornan una lista. [1,2,3]
-    script = "<html><body> Esta son las rutas sugeridas. Seleccione el tipo de silla deseado: "
-    script += " <form action=\"http://localhost:5000/intento2\" method=\"POST\">"
-    script += "<p> ID <input type = \"test\" name = \"ID\" / ></p>"
-    script += "<p> Tipo de pago <select id=\"tipo_pago\" name=\"tipo_pago\"> <option value = \"tarjeta\"> Tarjeta </option> <option value = \"efectivo\"> Efectivo </option> <option value = \"apple_pay\"> Apple pay </option></select > <br/></p>"
-    cont = 0
-    for ruta in rutas:
-        ciudades = ruta.split(" - ") 
-        query_id_ruta = "SELECT getRutaID("+str(ciudades_ids[ciudades[0]])+","+str(ciudades_ids[ciudades[1]])+")"
-        id_ruta_tabla = query2DataFrame(query_id_ruta)
-        id_ruta = id_ruta_tabla.at[0,"getrutaid"]
-        query_largo = "SELECT monto_vip,monto_ejecutivo,monto_economico,sillas_vip,sillas_ejecutivo,sillas_economico FROM ruta WHERE ruta.ruta_id = "+str(id_ruta)
-        tabla = query2DataFrame(query_largo)
-        tabla_mostrar = "<table class=\"egt\"><tr><th>Tipo de silla</th><th>Sillas disponibles</th><th>Precio por silla</th></tr>"
-        tabla_mostrar += "<tr><td>VIP</td><td>" + str(tabla.at[0, "sillas_vip"])+"</td><td>" + str(tabla.at[0, "monto_vip"])+"</td></tr>"
-        tabla_mostrar += "<tr><td>Ejecutivo</td><td>" + str(tabla.at[0, "sillas_ejecutivo"])+"</td><td>" + str(tabla.at[0, "monto_ejecutivo"])+"</td></tr>"
-        tabla_mostrar += "<tr><td>Economico</td><td>" + str(tabla.at[0, "sillas_economico"])+"</td><td>" + str(tabla.at[0, "monto_economico"])+"</td></tr></table>"
-        script += "<p>Ruta "+ruta+". Tipo de silla <select id=\"tipo_silla\" name=\"tipo_silla_"+str(cont)+"\"> <option value = \"vip\"> VIP </option> <option value = \"ejecutivo\"> Ejecutivo </option> <option value = \"economico\"> Economico </option></select > <br/>" + tabla_mostrar + " </p>"
-        script += "<input type = \"hidden\" name = \"ruta_"+str(cont)+"\" value=\""+str(id_ruta)+"\"/>"
-        cont += 1
-    script += "<p> <input type = \"hidden\" name = \"count\" value=\""+str(cont)+"\"/> </p>"
-    script += "<p> <input type = \"submit\" value = \"Reservar\"/> </p>"
-    script += "</form></body ></html >"
-    return script
+    DBConnection = None
+    try:
+        print("Connecting to database...")
+        DBConnection = psycopg2.connect(**parametrosDict)
+        cursorDB = DBConnection.cursor()
+        origen = request.values.get("origen")
+        destino = request.values.get("destino")
+        tipo_de_minimizacion = int(request.values.get("minimizar"))
+        query_origen = "SELECT idDeEstacion('"+origen+"')"
+        cursorDB.execute(query_origen)
+        id_origen = int(cursorDB.fetchone()[0])
+        query_destino = "SELECT idDeEstacion('"+destino+"')"
+        cursorDB.execute(query_destino)
+        id_destino = int(cursorDB.fetchone()[0])
+        rutas = []
+        ciudades_ids = {}
+        if tipo_de_minimizacion == 0:
+            resultado = nx.shortest_path(G_0, source=id_origen, target=id_destino)
+        elif tipo_de_minimizacion == 1:
+            resultado = nx.shortest_path(G_1, source=id_origen, target=id_destino)
+        elif tipo_de_minimizacion == 2:
+            resultado = nx.shortest_path(G_2, source=id_origen, target=id_destino)
+        elif tipo_de_minimizacion == 3:
+            resultado = nx.shortest_path(G_3, source=id_origen, target=id_destino)
+        for i in range(len(resultado)-1):
+            query_origen = "SELECT ciudadDeIdEstacion("+str(resultado[i])+")"
+            query_destino = "SELECT ciudadDeIdEstacion("+str(resultado[i+1])+")"
+            cursorDB.execute(query_origen)
+            ciudad_1 = cursorDB.fetchone()[0]
+            cursorDB.execute(query_destino)
+            ciudad_2 =cursorDB.fetchone()[0]
+            ciudades_ids[ciudad_1] = resultado[i]
+            ciudades_ids[ciudad_2] = resultado[i+1]
+            rutas.append(str(ciudad_1)+" - "+str(ciudad_2))
+        DBConnection.close()
+        script = "<html><body> Esta son las rutas sugeridas. Seleccione el tipo de silla deseado: "
+        script += " <form action=\"http://localhost:5000/reserva\" method=\"POST\">"
+        script += "<p> ID <input type = \"test\" name = \"ID\" / ></p>"
+        script += "<p> Tipo de pago <select id=\"tipo_pago\" name=\"tipo_pago\"> <option value = \"tarjeta\"> Tarjeta </option> <option value = \"efectivo\"> Efectivo </option> <option value = \"apple_pay\"> Apple pay </option></select > <br/></p>"
+        cont = 0
+        for ruta in rutas:
+            ciudades = ruta.split(" - ") 
+            query_id_ruta = "SELECT getRutaID("+str(ciudades_ids[ciudades[0]])+","+str(ciudades_ids[ciudades[1]])+")"
+            id_ruta_tabla = query2DataFrame(query_id_ruta)
+            id_ruta = id_ruta_tabla.at[0,"getrutaid"]
+            query_largo = "SELECT monto_vip,monto_ejecutivo,monto_economico,sillas_vip,sillas_ejecutivo,sillas_economico FROM ruta WHERE ruta.ruta_id = "+str(id_ruta)
+            tabla = query2DataFrame(query_largo)
+            tabla_mostrar = "<table class=\"egt\"><tr><th>Tipo de silla</th><th>Sillas disponibles</th><th>Precio por silla</th></tr>"
+            tabla_mostrar += "<tr><td>VIP</td><td>" + str(tabla.at[0, "sillas_vip"])+"</td><td>" + str(tabla.at[0, "monto_vip"])+"</td></tr>"
+            tabla_mostrar += "<tr><td>Ejecutivo</td><td>" + str(tabla.at[0, "sillas_ejecutivo"])+"</td><td>" + str(tabla.at[0, "monto_ejecutivo"])+"</td></tr>"
+            tabla_mostrar += "<tr><td>Economico</td><td>" + str(tabla.at[0, "sillas_economico"])+"</td><td>" + str(tabla.at[0, "monto_economico"])+"</td></tr></table>"
+            script += "<p>Ruta "+ruta+". Tipo de silla <select id=\"tipo_silla\" name=\"tipo_silla_"+str(cont)+"\"> <option value = \"vip\"> VIP </option> <option value = \"ejecutivo\"> Ejecutivo </option> <option value = \"economico\"> Economico </option></select > <br/>" + tabla_mostrar + " </p>"
+            script += "<input type = \"hidden\" name = \"ruta_"+str(cont)+"\" value=\""+str(id_ruta)+"\"/>"
+            cont += 1
+        script += "<p> <input type = \"hidden\" name = \"count\" value=\""+str(cont)+"\"/> </p>"
+        script += "<p> <input type = \"submit\" value = \"Reservar\"/> </p>"
+        script += "</form></body ></html >"
+        return script
+    except(Exception, psycopg2.DatabaseError) as error:
+        print("Error en el query: ", error)
+        return None
 
-@app.route("/intento2",methods=["POST","GET"])
-def holiwi():
+@app.route("/reserva",methods=["POST","GET"])
+def reservari():
     cont = int(request.values.get("count"))
     identificacion = int(request.values.get("ID"))
     DBConnection = None 
@@ -230,5 +238,21 @@ def holiwi():
     finally:
         if DBConnection is not None:
             DBConnection.close()
+
+"""
+Revisar si tiene reserva
+"""
+
+@app.route("/revisarReserva",methods=["GET"])
+def revisarReserva():
+    return app.send_static_file("revisarReserva.html")
+
+@app.route("/resultadoRevisarReserva",methods=["POST","GET"])
+def checkReserva():
+    identificacion = str(request.values.get("ID"))
+    query = "SELECT * FROM reserva WHERE reserva.cliente_id = "+identificacion
+    tabla = query2DataFrame(query)
+    return tabla.to_html()
+
 
 app.run()
