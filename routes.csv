@@ -44,22 +44,21 @@
 43;G7;Ancora-Pescara-Foggia
 44;G8;Firenze-Bologna-Venezia-Trieste
 45;G9;Milano-Verona-Bolzano
-46;O25;Lugano-Milano
-47;O26;Verona-Padova
-48;O27;Roma-Pescara
-49;O28;Napoli-Salerno
-50;O29;Bari-Taranto
-51;O30;Pisa-Livorno
-52;B7;Oostende-Brugge-Gent-Bruxelles-Liege-Maastricht-Eindhoven-Arnhem-Utrecht-Amsterdam-Den Haag-Rotterdam
-53;G10;Amsterdam-Amersfoort-Zwolle-Groningen-Bremen
-54;O31;Bruxelles-Antwerpen
-55;O32;Liege-Aachen-Koln-Monchen Gladbach-Eindhoven
-56;B8;Rostock-Berlin-Potsdam-Dessau-Leipzig-Jena-Erfurt-Bebra-Fulda-Wurzburg-Nurnberg-Regensburg-Munchen
-57;B9;Heidelberg-Darmstadt-Mainz-Bonn-Koln-Dusseldorf-Wuppertal-Hagen-Dortmund-Osnabruck-Bremen-Hamburg-Kiel
-58;G11;Luxemburgo-Saarsbrucken-Mannheim-Heidelberg-Stuttgart-Ulm-Augsburg-Munchen
-59;G12;Osnabruck-Hannover-Braunschweig-Magdeburg-Potsdam
-60;G13;Leipzig-Dresden-Chemnitz-Zwickau
-61;O33;Berlin-Cottbus
-62;O34;Braunschweig-Hamburg-Lubeck-Schwerin-Rostock
-63;O35;Duisburg-Essen-Dortmund-Kassel-Bebra
-64;O36;Frankfurt-Fulda
+46;O26;Verona-Padova
+47;O27;Roma-Pescara
+48;O28;Napoli-Salerno
+49;O29;Bari-Taranto
+50;O30;Pisa-Livorno
+51;B7;Oostende-Brugge-Gent-Bruxelles-Liege-Maastricht-Eindhoven-Arnhem-Utrecht-Amsterdam-Den Haag-Rotterdam
+52;G10;Amsterdam-Amersfoort-Zwolle-Groningen-Bremen
+53;O31;Bruxelles-Antwerpen
+54;O32;Liege-Aachen-Koln-Monchen Gladbach-Eindhoven
+55;B8;Rostock-Berlin-Potsdam-Dessau-Leipzig-Jena-Erfurt-Bebra-Fulda-Wurzburg-Nurnberg-Regensburg-Munchen
+56;B9;Heidelberg-Darmstadt-Mainz-Bonn-Koln-Dusseldorf-Wuppertal-Hagen-Dortmund-Osnabruck-Bremen-Hamburg-Kiel
+57;G11;Luxemburgo-Saarsbrucken-Mannheim-Heidelberg-Stuttgart-Ulm-Augsburg-Munchen
+58;G12;Osnabruck-Hannover-Braunschweig-Magdeburg-Potsdam
+59;G13;Leipzig-Dresden-Chemnitz-Zwickau
+60;O33;Berlin-Cottbus
+61;O34;Braunschweig-Hamburg-Lubeck-Schwerin-Rostock
+62;O35;Duisburg-Essen-Dortmund-Kassel-Bebra
+63;O36;Frankfurt-Fulda
